@@ -1,25 +1,22 @@
 pragma solidity ^0.4.11;
 
 import "./Owned.sol";
- 
-import "./BurnableToken.sol";
-
+import './ERC20.sol';
 
 
 //This is the main Token Contract derived from the other two contracts
-
-contract SwytchToken is Owned, BurnableToken {
+contract SwytchToken is Owned, ERC20 {
 
     mapping (address => bool) public frozenAccount;
     mapping (address => mapping (address => uint256)) allowed;
     event FrozenFunds(address target, bool frozen);
 
  
-    //This is the main token to be prepopulated with all the parameters
+    //This is the main token to be pre-populated with all the parameters
 	function SwytchToken(uint256 initialSupply, string tokenName, string tokenSymbol, uint8 decimalUnits, address centralAdmin) 
-	DetailedERC20 (tokenName,tokenSymbol, decimalUnits ) public{
+	ERC20 (tokenName,tokenSymbol, decimalUnits ) public {
 		totalSupply = initialSupply;
-		if(centralAdmin != 0)
+		if (centralAdmin != 0)
 			owner = centralAdmin;
 		else
 			owner = msg.sender;
@@ -52,7 +49,8 @@ contract SwytchToken is Owned, BurnableToken {
          address _from,
          address _to,
          uint256 _amount
-     ) public returns (bool success) {
+     ) public returns (bool success) 
+     {
          if (balancesOf[_from] >= _amount
              && allowed[_from][msg.sender] >= _amount
              && _amount > 0
